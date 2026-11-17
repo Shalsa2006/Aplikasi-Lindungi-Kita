@@ -1,0 +1,10 @@
+backend/config.php
+backend/storage/evidence/*
+!backend/storage/evidence/.gitkeep
+frontend/build/
+frontend/.dart_tool/
+frontend/.idea/
+frontend/android/.gradle/
+frontend/android/.kotlin/
+frontend/android/local.properties
+*.zip
