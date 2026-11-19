@@ -1,0 +1,11 @@
+RewriteEngine On
+# Teruskan header Authorization ke PHP (Apache sering membuangnya)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+# Semua request ke index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
+
+<FilesMatch "^(config\.php|helpers\.php|database\.sql)$">
+  Require all denied
+</FilesMatch>
