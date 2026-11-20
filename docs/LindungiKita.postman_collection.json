@@ -1,0 +1,1119 @@
+{
+  "info": {
+    "name": "LindungiKita API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Urutan: jalankan Login admin/petugas/pelapor dahulu agar token tersimpan otomatis."
+  },
+  "item": [
+    {
+      "name": "1. Umum",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Daftar lembaga bantuan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/resources",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "resources"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Statistik publik",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/stats/public",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "stats",
+                "public"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Auth",
+      "item": [
+        {
+          "name": "Register pelapor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Sari\",\n  \"email\": \"sari@mail.com\",\n  \"password\": \"rahasia1\",\n  \"no_hp\": \"081234567890\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.ok) pm.collectionVariables.set('token_pelapor', j.data.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@lindungikita.id\",\n  \"password\": \"Admin123!\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.ok) pm.collectionVariables.set('token_admin', j.data.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login petugas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"petugas@lindungikita.id\",\n  \"password\": \"Petugas123!\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.ok) pm.collectionVariables.set('token_petugas', j.data.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login pelapor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"pelapor@lindungikita.id\",\n  \"password\": \"Pelapor123!\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.ok) pm.collectionVariables.set('token_pelapor', j.data.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Profil saya (pelapor)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "me"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_pelapor}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Pelapor",
+      "item": [
+        {
+          "name": "Kirim laporan anonim (tanpa bukti)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kategori\": \"perundungan\",\n  \"judul\": \"Dirundung di kelas\",\n  \"deskripsi\": \"Kronologi singkat kejadian.\",\n  \"wilayah\": \"DKI Jakarta\",\n  \"anonim\": 1\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.ok) { pm.collectionVariables.set('case_no', j.data.case_no); pm.collectionVariables.set('access_code', j.data.access_code); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Kirim laporan + bukti terenkripsi",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "kategori",
+                  "value": "seksual",
+                  "type": "text"
+                },
+                {
+                  "key": "judul",
+                  "value": "Contoh laporan",
+                  "type": "text"
+                },
+                {
+                  "key": "deskripsi",
+                  "value": "Kronologi.",
+                  "type": "text"
+                },
+                {
+                  "key": "anonim",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "bukti[]",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.ok) { pm.collectionVariables.set('case_no', j.data.case_no); pm.collectionVariables.set('access_code', j.data.access_code); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Lacak kasus (tanpa akun)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/track",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "track"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"case_no\": \"{{case_no}}\",\n  \"access_code\": \"{{access_code}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Kirim chat (tanpa akun)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/track/message",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "track",
+                "message"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"case_no\": \"{{case_no}}\",\n  \"access_code\": \"{{access_code}}\",\n  \"isi\": \"Halo, saya butuh pendampingan.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Laporan saya",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/my-reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "my-reports"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_pelapor}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detail laporan saya",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/my-reports/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "my-reports",
+                "1"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_pelapor}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Chat laporan saya",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/my-reports/1/messages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "my-reports",
+                "1",
+                "messages"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_pelapor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isi\": \"Terima kasih.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Daftar kontak tepercaya",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/contacts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "contacts"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_pelapor}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Tambah kontak tepercaya",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/contacts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "contacts"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_pelapor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Ibu\",\n  \"no_hp\": \"081234567890\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Hapus kontak",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/contacts/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "contacts",
+                "1"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_pelapor}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "SOS darurat",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/sos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "sos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_pelapor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lat\": -7.2575,\n  \"lng\": 112.7521\n}"
+            }
+          }
+        },
+        {
+          "name": "Unduh bukti (kode akses)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/evidence/1?case_no={{case_no}}&code={{access_code}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "evidence",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "case_no",
+                  "value": "{{case_no}}"
+                },
+                {
+                  "key": "code",
+                  "value": "{{access_code}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Petugas",
+      "item": [
+        {
+          "name": "Antrian kasus",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/staff/reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "staff",
+                "reports"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_petugas}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Antrian: filter status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/staff/reports?status=diterima",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "staff",
+                "reports"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "diterima"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_petugas}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detail kasus",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/staff/reports/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "staff",
+                "reports",
+                "1"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_petugas}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ubah status kasus",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/reports/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "staff",
+                "reports",
+                "1"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_petugas}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"diverifikasi\",\n  \"urgensi\": \"tinggi\",\n  \"catatan_petugas\": \"Sudah dihubungi.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Balas chat pelapor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/reports/1/messages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "staff",
+                "reports",
+                "1",
+                "messages"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_petugas}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isi\": \"Kami siap mendampingi Anda.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Daftar SOS masuk",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/staff/sos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "staff",
+                "sos"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_petugas}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Unduh bukti (petugas)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/evidence/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "evidence",
+                "1"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_petugas}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Admin",
+      "item": [
+        {
+          "name": "Statistik dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "stats"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Daftar petugas dan admin",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/staff",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "staff"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Tambah petugas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/staff",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "staff"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Pak Budi\",\n  \"email\": \"budi@lindungikita.id\",\n  \"password\": \"Budi1234\",\n  \"instansi\": \"Dinas PPPA\",\n  \"wilayah\": \"Jawa Timur\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Nonaktifkan petugas",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/users/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "2"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"aktif\": 0\n}"
+            }
+          }
+        },
+        {
+          "name": "Audit log",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/audit",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "audit"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Uji keamanan (harus ditolak)",
+      "item": [
+        {
+          "name": "Pelapor akses admin (403)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "stats"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_pelapor}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Tanpa token akses antrian (401)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/staff/reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "staff",
+                "reports"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login salah (401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@lindungikita.id\",\n  \"password\": \"salah\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost/lindungikita_api"
+    },
+    {
+      "key": "token_admin",
+      "value": ""
+    },
+    {
+      "key": "token_petugas",
+      "value": ""
+    },
+    {
+      "key": "token_pelapor",
+      "value": ""
+    },
+    {
+      "key": "case_no",
+      "value": ""
+    },
+    {
+      "key": "access_code",
+      "value": ""
+    }
+  ]
+}
